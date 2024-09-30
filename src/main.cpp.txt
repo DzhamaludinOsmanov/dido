@@ -1,35 +1,44 @@
+#include "C:/vcpkg/vcpkg/installed/x64-windows/include/curl/curl.h"
 #include <iostream>
+#include <iomanip>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <thread>
 #include <vector>
-#include <curl/curl.h>
-#include "downloader.h"
+#include "C:/url_downloader/dido/include/downloader.h"
 
-void log(const std::string& message) {
-    auto now = std::chrono::system_clock::now();
-    auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
-    std::cout << "[" << now_ms.count() << "] " << message << std::endl;
+using namespace std;
+using namespace std::chrono;
+
+string current_time() {
+    auto now = system_clock::now();
+    auto time_now = system_clock::to_time_t(now);
+    ostringstream oss;
+    oss << put_time(localtime(&time_now), "%Y-%m-%d %H:%M:%S");
+    return oss.str();
 }
 
-int main(int argc, char* argv[]) {
-    if (argc != 4) {
-        std::cerr << "Usage: " << argv[0] << " <urls_file> <output_directory> <max_concurrent_downloads>" << std::endl;
-        return 1;
-    }
+void log(const string& message) {
+    cout << "[" << current_time() << "] " << message << endl;
+}
 
-    std::string urls_file = argv[1];
-    std::string output_directory = argv[2];
-    int max_concurrent_downloads = std::stoi(argv[3]);
+int main() {
+
+    string urls_file;
+    string output_directory;
+    int max_concurrent_downloads;
+
+    cin >> urls_file >> output_directory >> max_concurrent_downloads;
 
     log("Starting program");
-    log("Parameters: " + std::string(argv[1]) + ", " + std::string(argv[2]) + ", " + std::string(argv[3]));
+    log("Parameters: " + urls_file + ", " + output_directory + ", " + to_string(max_concurrent_downloads));
 
-    std::vector<std::string> urls;
-    std::ifstream infile(urls_file);
-    std::string url;
+    vector<string> urls;
+    ifstream infile(urls_file);
+    string url;
 
-    while (std::getline(infile, url)) {
+    while (getline(infile, url)) {
         if (!url.empty()) {
             urls.push_back(url);
         }
