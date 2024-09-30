@@ -1,6 +1,6 @@
-#include "C:/vcpkg/vcpkg/installed/x64-windows/include/curl/curl.h"
+#include "curl/curl.h"
 #include <iostream>
-#include "C:/url_downloader/dido/include/downloader.h"
+#include "downloader.h"
 #include <thread>
 #include <mutex>
 #include <queue>
