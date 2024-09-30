@@ -4,14 +4,20 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
+void log(const string& message);
+
 class Downloader {
 public:
-    Downloader(const std::string& output_dir, int max_concurrent_downloads);
-    void download_files(const std::vector<std::string>& urls);
+    Downloader(const string& output_dir, int max_conc_downloads);
+    void download_files(const vector<string>& urls);
 
 private:
-    void download_file(const std::string& url);
-    std::string output_directory;
+    string getFilename(const string& url, const string& contentDisposition);
+    string sanitizeFilename(const string& filename);
+    void download_file(const string& url);
+    string output_directory;
     int max_concurrent_downloads;
 };
 
